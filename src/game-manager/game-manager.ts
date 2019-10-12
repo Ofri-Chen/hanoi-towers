@@ -3,14 +3,12 @@ import { IOHandler } from "../interfaces";
 import { GameManagerOutputHandler, GameManagerInputHandler } from "./interfaces";
 
 export class GameManager {
-    private _game: Game;
     private _isGameFinished: boolean = false;
 
-    constructor(amountOfPoles: number,
-        amountOfDisks: number,
+    constructor(private _game: Game,
         private _inputHandler: GameManagerInputHandler,
         private _outputHandler: GameManagerOutputHandler) {
-        this._game = new Game(amountOfPoles, amountOfDisks, this.onGameFinished.bind(this));
+        this._game.watchOnGameFinished(this.onGameFinished.bind(this));
     }
 
     async run(): Promise<void> {
