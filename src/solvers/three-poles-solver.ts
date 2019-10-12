@@ -11,12 +11,13 @@ export class ThreePolesSolver extends SolverBase {
         this.moveToPole(0, 2, 0);
     }
 
-    private moveToPole(fromIndex: number, toIndex: number, diskIndex: number) {
+    private moveToPole(fromIndex: number, toIndex: number, diskIndex: number): void {
         const freePole = this.getRemainingFreePole(fromIndex, toIndex);
         const poles = this.game.poles;
         const fromPoleDisks = poles[fromIndex].disks;
 
-        if (_.get(fromPoleDisks[diskIndex], 'size') === 2) {
+        // if (_.get(fromPoleDisks[diskIndex], 'size') === 2) {
+        if (fromPoleDisks[diskIndex].size === 2) {
             this.solveTwo(fromIndex, toIndex, freePole);
         } else if (fromPoleDisks.length - 1 === diskIndex) {
             this.game.moveDisk(fromIndex, toIndex);
