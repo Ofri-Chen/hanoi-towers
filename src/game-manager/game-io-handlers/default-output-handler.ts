@@ -1,4 +1,4 @@
-import { IOHandler, Disk, Pole } from "../../interfaces";
+ import { IOHandler, Disk, Pole } from "../../interfaces";
 import { GameManagerOutputHandler } from "../interfaces";
 import { Game } from "../../game";
 import { range } from "../../utils";

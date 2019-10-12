@@ -49,12 +49,16 @@ export class Game {
     private isGameFinished(): boolean {
         return this._poles.peek().disks.length === this._amountOfDisks;
     }
+    
     private validateMoveDiskInput(fromIndex: number, toIndex: number): void {
         if (!isInRange(fromIndex, 0, this._amountOfPoles - 1)) {
             throw new Error(`Index out of range (fromIndex)`);
         }
         if (!isInRange(toIndex, 0, this._amountOfPoles - 1)) {
             throw new Error(`Index out of range (toIndex)`);
+        }
+        if (fromIndex === toIndex) {
+            throw new Error(`fromIndex and toIndex have the same value`);
         }
         if (this._poles[fromIndex].disks.length === 0) {
             throw new Error(`The pole doesn't have any disks on it`);
