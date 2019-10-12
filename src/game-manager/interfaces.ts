@@ -1,5 +1,4 @@
 import { Game } from "../game";
-import { IOHandler } from "../interfaces";
 
 export interface GameManagerOutputHandler {
     printBoard: (game: Game) => Promise<void>;

@@ -17,17 +17,16 @@ export class DefaultGameManagerOutputHandler implements GameManagerOutputHandler
     }
 
     public async printWinningMessage(game: Game): Promise<any> {
-        this.ioHandler.writeLine('-----------------------------------------');
+        await this.ioHandler.writeLine('-----------------------------------------');
         await this.ioHandler.writeLine(`Game won in ${game.currAmountOfMoves} moves !!`);
-        this.ioHandler.writeLine('-----------------------------------------');
+        await this.ioHandler.writeLine('-----------------------------------------');
     }
 
     private async printHeaders(amountOfPoles: number): Promise<void> {
         const headers = range(0, amountOfPoles);
         await this.ioHandler.writeLine(headers.join(this._polesDelimiter));
         const amountOfCharactersInHeader = amountOfPoles + (amountOfPoles - 1) * this._polesDelimiter.length;
-        const aa = range(0, amountOfCharactersInHeader).map(() => '').join('-') + '-';
-        await this.ioHandler.writeLine(aa);
+        await this.ioHandler.writeLine(range(0, amountOfCharactersInHeader).map(() => '').join('-') + '-');
     }
 
     private async printPoles(poles: Pole[]): Promise<void> {
@@ -38,7 +37,7 @@ export class DefaultGameManagerOutputHandler implements GameManagerOutputHandler
                 return pole.disks.length > i ? pole.disks[i].size : ' ';
             });
 
-            this.ioHandler.writeLine(currRowValuesToPrint.join(this._polesDelimiter));
+            await this.ioHandler.writeLine(currRowValuesToPrint.join(this._polesDelimiter));
         }
     }
 }

@@ -1,4 +1,4 @@
-import { Pole } from "./interfaces";
+import { Pole, OnGameFinishedCallback } from "./interfaces";
 import { range, isInRange } from "./utils";
 import { GameManagerOutputHandler } from "./game-manager/interfaces";
 import * as _ from 'lodash';
@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 export class Game {
     private _poles: Pole[] = [];
     private _isGameFinished: boolean = false;
+    private _onGameFinishedCallbacks: OnGameFinishedCallback[] = [];
 
     public currAmountOfMoves: number = 0;
 
@@ -15,8 +16,11 @@ export class Game {
 
     constructor(private _amountOfPoles: number,
         private _amountOfDisks: number,
-        private _onGameFinished: (amountOfMoves: number) => void = () => { }) {
+        _onGameFinished?: OnGameFinishedCallback) {
         this._poles = this.buildInitialState();
+        if(_onGameFinished) {
+            this._onGameFinishedCallbacks.push(_onGameFinished);
+        }
     }
 
     public moveDisk(fromIndex: number, toIndex: number) {
@@ -28,8 +32,12 @@ export class Game {
 
         if (this.isGameFinished()) {
             this._isGameFinished = true;
-            this._onGameFinished(this.currAmountOfMoves);
+            this._onGameFinishedCallbacks.forEach(callback => callback(this.currAmountOfMoves));
         }
+    }
+
+    public watchOnGameFinished(callback: OnGameFinishedCallback) {
+        this._onGameFinishedCallbacks.push(callback);
     }
 
     private buildInitialState(): Pole[] {
@@ -49,7 +57,7 @@ export class Game {
     private isGameFinished(): boolean {
         return this._poles.peek().disks.length === this._amountOfDisks;
     }
-    
+
     private validateMoveDiskInput(fromIndex: number, toIndex: number): void {
         if (!isInRange(fromIndex, 0, this._amountOfPoles - 1)) {
             throw new Error(`Index out of range (fromIndex)`);

@@ -10,3 +10,5 @@ export interface IOHandler {
     read(funcInput?: any): string | Promise<string>;
     writeLine(value: any): any | Promise<any>;
 }
+
+export type OnGameFinishedCallback = (amountOfMoves: number) => any | Promise<any>;
